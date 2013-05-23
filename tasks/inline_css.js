@@ -38,11 +38,17 @@ module.exports = function(grunt) {
         return false;
       }
 
-      juice(filepath, function(err, html) {
+      var doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+
+      juice(filepath,{ addDoctype: doctype } ,function(err, html) {
 
         if (err) {
           return grunt.log.error(err);
         }
+        
+        // //JSDOM strips out doctype so we need to add it back in
+        // var doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+        // html = doctype + html;
 
         grunt.file.write(f.dest, html);
         grunt.log.writeln('File "' + f.dest + '" created.');
